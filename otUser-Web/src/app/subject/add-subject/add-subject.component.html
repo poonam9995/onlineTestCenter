@@ -1,0 +1,58 @@
+<div class="login-container">
+  <div class="center-box">
+    <div class="form-Header">
+      <h1> Subjects</h1>
+    </div>
+    <div class="card">
+
+      <form class='form' (ngSubmit)='onSubmit()' [formGroup]='addSubject'>
+        <div class="form-group row">
+          <div class="col-md-4" style='text-align:end'>
+            <label> Subject Name : </label>
+          </div>
+          <div class="col-md-4">
+            <input formControlName='subjectName' type="text" class="form-control" >
+            <div class="alert red-text"
+              *ngIf="addSubject.get('subjectName').hasError('required')  && (addSubject.get('subjectName').touched || addSubject.get('subjectName').dirty) ">
+              Enter Subject Name
+            </div>            
+          </div>
+          <div class="col-md-4">
+            <button type="submit" [disabled]="addSubject.controls['subjectName'].invalid"
+              class="btn btn-primary">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card">
+      <div style='text-align:center'>
+        <h5>List Of Subjects</h5>
+      </div>
+
+      <div class="table-responsive ">
+        <table class="table table-striped" >
+          <thead>
+            <tr>
+              <th scope="col">Sr No.</th>
+              <th scope="col"> Subject Name
+              <th scope="col">Opration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let subject of data;let i = index'>
+              <td style="color:brown"> {{i + 1}} </td>
+              <td>{{subject.subjectName}}</td>
+              <td>
+                <!-- <a routerLink="" class="btn action-btn">
+                  <i class="material-icons">edit</i>
+                </a> -->
+                <a class="btn action-btn">
+                  <i class="material-icons" (click)='deleteSubject(subject._id)'>delete</i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

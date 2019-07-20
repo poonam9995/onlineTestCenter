@@ -1,0 +1,87 @@
+<div class="login-container">
+  <div class="center-box">
+    <div class="form-Header">
+      <h1> Topics</h1>
+    </div>
+    <div class="card">
+      <form  [formGroup]='addTopic' class='form' (ngSubmit)='onSubmit()'>
+          <div class="form-group row">
+              <div class="col-md-4" style='text-align:end'>
+                  <label> Select Subject : </label>
+                </div>
+                <div class="col-md-4">
+                  <select formControlName='subjectId' class="form-control" >
+                    <option *ngFor='let subject of data;let i = index' value='{{subject._id}}'>{{subject.subjectName}}</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                    
+                  </div>
+          </div>
+        <div class="form-group row">
+          <div class="col-md-4" style='text-align:end'>
+            <label> Topic Name : </label>
+          </div>
+          <div class="col-md-4">
+            <input formControlName='topicName' type="text" class="form-control" >
+            <div class="alert red-text"
+              *ngIf="addTopic.get('topicName').hasError('required') && (addTopic.get('topicName').touched || addTopic.get('topicName').dirty) ">
+              Enter Topic Name
+            </div>            
+          </div>
+          <div class="col-md-4">
+            <button type="submit"  [disabled]="addTopic.controls['topicName'].invalid"
+              class="btn btn-primary">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card">
+        <div class="form-group row">
+            <div class="col-md-4" style='text-align:end'>
+                <label>  Subject : </label>
+              </div>
+        <div class="col-md-4">
+            <select  class="form-control" (change)="displayTopic($event)">
+              <option></option>
+              <option *ngFor='let subject of data;let i = index' value='{{subject._id}}' >{{subject.subjectName}}</option>
+            </select>
+          </div>
+        </div>
+      <div style='text-align:center'>
+        <h5>List Of Topic</h5>
+        <label>Selected Subject is : <strong>{{SubjectName}} </strong></label>
+      </div>
+
+      <div class="table-responsive ">
+        <table class="table table-striped" >
+          <thead>
+            <tr>
+              <th scope="col">Sr No.</th>             
+              <th scope="col">Topic Name</th>              
+              <th scope="col">Opration</th>
+            </tr>
+          </thead>
+          <tbody>
+           
+            <tr *ngFor='let tpc of topic; let i = index' >
+                
+              <td>{{i + 1}}</td>
+              <td contenteditable
+              > {{tpc.topicName}}</td>
+              <td >
+                  
+              <a class="btn action-btn" (click)="Edit($event,tpc._id)">
+                  edit
+                </a> 
+               
+                <a class="btn action-btn" (click)='deleteTopic(tpc._id)'>
+                 delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

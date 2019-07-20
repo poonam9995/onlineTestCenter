@@ -1,0 +1,45 @@
+Errors=>{
+    1)Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    =>this error occure when we write return with res.json in controller File  
+    2)Set Header 
+    => we can set Header using HttpHeaders().set('Authentication','token');
+      /=> new HttpHeaders({
+           'Authentication':`Banare${this.getToken()}`
+      })
+}
+Auth={
+    =>UserRegistration
+     =>Login 
+    => ForgotPassword
+    => ResetPassword
+   * => Authentication using Token Setting
+   * =>set header
+    }
+dashboard={
+    => default
+}
+subject={
+    =>addSubject       
+    =>DeletedSubject
+    =>ViewSubject
+}
+topic={
+     =>addTopic
+     =>EditTopic
+     =>DeletedTopic
+     =>ViewTopic
+}
+Questions={
+    =>addQuestion
+    EditQuestion
+    DeleteQuestion
+    =>ViewQuestion
+}
+test-Templet={
+    addTestTemp
+    EditTestTemp
+    DeleteTestTemp
+    ViewTestTemp
+}
+
+

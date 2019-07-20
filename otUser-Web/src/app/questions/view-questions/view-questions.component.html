@@ -1,0 +1,60 @@
+<div class="login-container">
+
+  <div class="center-box">
+    <div class="form-Header">
+      <h1> Questions </h1>
+    </div>
+    <div class="card">
+        <form [formGroup]='viewQuestion' class='form' (ngSubmit)='onSubmit()'>
+              <!-- <pre class="card card-block card-header mb-3">Model: {{selected | json}}</pre>  -->
+  <!-- <input [typeahead]="data" [adaptivePosition]="true" class="form-control">  -->
+  <div class="row">
+    <div class="col-md-6">
+              <input [typeahead]="data" class="form-control" 
+              typeaheadOptionField="subjectName"
+              placeholder="Choose Only One Subject"  (typeaheadOnSelect)="typeHeadSelected($event)" 
+             [typeaheadSingleWords]="true" formControlName='subjectId'>
+            </div>
+            <div class="col-md-6" *ngIf='topic'>
+                <input [typeahead]="topic" class="form-control" 
+                typeaheadOptionField="topicName"  (typeaheadOnSelect)="typeHeadSelectedTopic($event)" 
+               [typeaheadSingleWords]="true" formControlName='topicId'>
+              </div>
+            </div>
+</form>
+            </div>
+
+         
+    <div class="card">
+      <div style='text-align:center'>
+        <h5>List Of Subjects</h5>
+      </div>
+
+      <div class="table-responsive ">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Sr No.</th>
+              <th scope="col"> Question
+              <th scope="col">Opration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let que of question;let i = index'>
+              <td style="color:brown"> {{i + 1}} </td>
+              <td>{{que.questionText}}</td>
+              <td>
+                  <!-- <a routerLink="/editQuestion/{{que._id}}">  <i class="material-icons">edit</i></a> -->
+                <a  class="btn action-btn" (click)='editQuestion(que._id)'>
+                    <i class="material-icons">edit</i>
+              </a>
+                <a class="btn action-btn">
+                  <i class="material-icons" (click)='deleteQuestion(que._id)'>delete</i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

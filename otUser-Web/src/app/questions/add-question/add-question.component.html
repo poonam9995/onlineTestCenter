@@ -1,0 +1,185 @@
+<div class="login-container">
+  <div class="center-box">
+
+    <div class="form-Header">
+      <h1>Question</h1>
+    </div>
+    <div class="card">
+      <form [formGroup]='addQuestion' class='form' (ngSubmit)='onSubmit()'>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-md-6" style='text-align:center'>
+                <label> Select Subject : </label>
+              </div>
+              <div class="col-md-6">
+                <select formControlName='subjectId' class="form-control" (change)="displayTopic($event)">
+                  <option *ngFor='let subject of data;let i = index' value='{{subject._id}}'>{{subject.subjectName}}
+                  </option>
+                </select>
+                <div class="alert red-text"
+                  *ngIf="addQuestion.get('subjectId').hasError('required') && (addQuestion.get('subjectId').touched || addQuestion.get('subjectId').dirty) ">
+                  Select Subject Name
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-md-6" style='text-align:center'>
+                <label> Select topic : </label>
+              </div>
+              <div class="col-md-6">
+                <select formControlName='topicId' class="form-control">
+                  <option *ngFor='let tpc of topic; let i = index' value='{{tpc._id}}'>{{tpc.topicName }}
+                  </option>
+                </select>
+                <div class="alert red-text"
+                  *ngIf="addQuestion.get('topicId').hasError('required') && (addQuestion.get('topicId').touched || addQuestion.get('topicId').dirty) ">
+                  Select Topic Name
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class=' row'>
+          <div class='col-md-9'>
+            <div class='form-group row'>
+              <div class='col-md-4' style="text-align:center">
+                <label>Question Type:</label>
+              </div>
+              <div class='col-md-8'>
+                <select formControlName='type' class="form-control" (change)="multipleSelection($event)">
+                  <option value="Multiple_Choice">Multiple_Choice</option>
+                  <option value="Multiple_Response">Multiple_Response</option>
+                </select>
+                <div class="alert red-text"
+                  *ngIf="addQuestion.get('type').hasError('required') && (addQuestion.get('type').touched || addQuestion.get('type').dirty) ">
+                  Enter Question Text
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-3" style='text-align:center'>
+            <label> Question Text : </label>
+          </div>
+          <div class="col-md-9">
+            <input formControlName='questionText' type="text" class="form-control">
+            <div class="alert red-text"
+              *ngIf="addQuestion.get('questionText').hasError('required') && (addQuestion.get('questionText').touched || addQuestion.get('questionText').dirty) ">
+              Enter Question Text
+            </div>
+          </div>
+        </div>
+        <div class="row" style='text-align:center'>
+          <div class="form-group col-md-3">
+            <button type="button" class="btn btn-primary " (click)="addgroupClick()"><i class="material-icons">add</i>
+              Add Option
+
+            </button>
+          </div>
+          <div class="form-group col-md-9" style="display:inline">
+            <div class="row">
+              <div class="input-group mb-3" formArrayName="options"
+                *ngFor="let item of addQuestion.get('options').controls; let i = index;">
+                <div class=" col-md-7" [formGroupName]="i">
+                  <input type="text" formControlName='option' placeholder="Enter Options"
+                    (blur)="addOptions($event,i+1)" class="form-control" aria-label="Recipient's username"
+                    aria-describedby="basic-addon2">
+                </div>
+                <div class="input-group-append">
+                  <a class="btn action-btn">
+                    <i class="material-icons" (click)='deleteRow(i)'>delete</i></a>
+                </div>
+              </div>
+
+
+              <!-- <div class="col-md-3" formArrayName="options"
+              *ngFor="let item of addQuestion.get('options').controls; let i = index;">
+              
+                <div class ='form-group row'>
+                <div class=" col-md-11"  [formGroupName]="i">
+                <input type="text" formControlName='option' (blur)="addOptions($event,i+1)" class="form-control">
+                </div>
+                <div class=" col-md-3">
+                    <a class="btn action-btn">
+                        <i class="material-icons" (click)='deleteRow(i)'>delete</i></a>
+                </div>
+              </div>
+              </div> -->
+              <div class="alert red-text" *ngIf="addQuestion.get('options').errors?.optionerror">
+                Add minimum 2 Options and Maximun 6 Options
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf='multipleResponse'>
+          <div class="col-md-3" style='text-align:center'>
+            <label>Correct Answers</label>
+          </div>
+          <div class="col-md-9">
+            <tag-input formControlName="correctAnswers" [identifyBy]="'id'" [displayBy]="'name'"
+              (onAdd)='onAddCorrect($event)' (onRemove)="onRemoveCorrect($event)" [onlyFromAutocomplete]="true">
+              <tag-input-dropdown [showDropdownIfEmpty]="true" [identifyBy]="'id'" [displayBy]="'name'"
+                [autocompleteItems]='optionArray'>
+              </tag-input-dropdown>
+            </tag-input>
+            <div class="alert red-text" *ngIf="CorrectAnsArray.length < 2">
+              Add minimum 2 Correct Answers
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf='multipleChoice'>
+          <div class="col-md-3" style='text-align:center'>
+            <label>Correct Answers</label>
+          </div>
+          <div class="col-md-9">
+            <div class="row">
+              <div class="form-group col-md-3" *ngFor="let option of optionArray; let i = index;">
+
+                <input type="radio" formControlName='correctAnswers' value="{{option.id}}"> {{option.name}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-3" style='text-align:center'>
+            <label>Solution : </label>
+          </div>
+          <div class="col-md-9">
+            <textarea formControlName='solution' type="text" class="form-control">
+                    </textarea>
+            <!-- <div class="alert red-text"
+                  *ngIf="addQuestion.get('topicName').hasError('required') && (addQuestion.get('topicName').touched || addQuestion.get('topicName').dirty) ">
+                  Enter Topic Name
+                </div> -->
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-3" style='text-align:center'>
+            <label>Tags</label>
+          </div>
+          <div class="col-md-9">
+            <tag-input formControlName='tags' [separatorKeyCodes]="[188]" (onAdd)='onAddTags($event)'
+              (onRemove)="onRemoveTags($event)"></tag-input>
+
+            <!-- <div class="alert red-text" *ngIf="RegistrationEmployee.get('techSkill').errors?.skillvali && (RegistrationEmployee.get('techSkill').touched || RegistrationEmployee.get('techSkill').dirty) ">
+            Must Be Enter Minimun Two Technical Skills
+          </div> -->
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary float-left"> Submit </button>
+      </form>
+
+    </div>
+
+    <br>

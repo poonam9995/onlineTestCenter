@@ -1,0 +1,93 @@
+<div class="employeeform">
+  <div class="form-Header">
+      User SignUp
+  </div>
+  <br>
+  <div class="form-contain">
+      <form [formGroup]="register"  (ngSubmit)='onSubmit()' class="form" >
+          <div class="form-group row">
+              <label class="col-sm-4 col-form-label" for="inputEmail4 ">First Name:
+              
+              </label>
+              <div class="col-sm-7">
+              <input type="text" formControlName='firstName'  class="form-control" placeholder="Enter First Name"
+                  required />
+              <div class="alert   red-text"
+                  *ngIf="register.get('firstName').hasError('required') && (register.get('firstName').touched || register.get('firstName').dirty) ">
+                  Enter User Name.
+              </div>
+              </div>
+
+          </div>
+          <div class="form-group row">
+              <label   class="col-sm-4 col-form-label" for="inputEmail4">Last Name:
+              
+              </label>
+              <div class="col-sm-7">
+              <input type="text"  formControlName='lastName' class="form-control" placeholder="Enter Last Name" required />
+              <div class="alert   red-text"
+                  *ngIf="register.get('lastName').hasError('required') && (register.get('lastName').touched || register.get('lastName').dirty) ">
+                  Enter User Name.
+              </div>
+              </div>
+          </div>
+
+          <div class="form-group row">
+              <label  class="col-sm-4 col-form-label" for="inputemail">Email Id :</label>
+              <div class="col-sm-7">
+              <input type="email" formControlName='email' class="form-control"  placeholder="@gmail.com" required>
+
+              <div class="alert red-text"
+                  *ngIf="register.get('email').hasError('required') && (register.get('email').touched || register.get('email').dirty) ">
+                  Enter Email Id
+              </div>
+              <div class="alert red-text"
+                  *ngIf="register.get('email').hasError('pattern') && (register.get('email').touched || register.get('email').dirty) ">
+                  Enter Valid Email Id
+              </div>
+              </div>
+          </div>
+
+          <div class="form-group row">
+              <label  class="col-sm-4 col-form-label" for="inputEmail4">Password:
+                
+              </label>
+              <div class="col-sm-7">
+              <input type="password" formControlName='password' class="form-control"  placeholder="" required />
+              <div class="alert   red-text"
+                *ngIf="register.get('password').hasError('required') && (register.get('password').touched || register.get('password').dirty) ">
+                Enter password.
+              </div> 
+              </div>
+          </div>
+
+          <div class="form-group row">
+              <label  class="col-sm-4 col-form-label" for="inputEmail4">Confirm Password:
+               
+              </label>
+              <div class="col-sm-7">
+              <input type="password" formControlName='cpassword' class="form-control" placeholder="" required />
+
+              <div class="alert red-text"
+                  *ngIf="register.get('cpassword').errors?.pass  && (register.get('cpassword').touched || register.get('cpassword').dirty) ">
+                  Password and Conform Password Not Match.
+              </div>
+              </div>
+          </div>
+          <div class="form-group row">
+              <label  class="col-sm-4 col-form-label" for="inputEmail4">Status:
+             
+              </label>
+              <div class="col-sm-7">
+              <select type="password"  formControlName='status' class="form-control" required>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+              </select>
+              </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+  </div>
+
+</div>
