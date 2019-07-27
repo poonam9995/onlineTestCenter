@@ -15,20 +15,16 @@ const routes: Routes = [{
   children:
     [{
       path: 'addTestTemplet',
-      component: AddTestTempletComponent,
-    canActivate:[AuthGuardService]
+      component: AddTestTempletComponent,   
     },
     {
       path: 'viewTestTemplet',
       component: ViewTestTempletComponent,
-    canActivate:[AuthGuardService]
-    },
+        },
     {
       path: 'editTestTemplet/:id',
       component: EditTestTempletComponent,     
-      canActivate:[AuthGuardService]
-    }
-
+        }
   ],
   canActivate:[AuthGuardService]
 }];

@@ -8,10 +8,10 @@ const testTemplet = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'questions'
         },
-        rightMarkes: Number,
-        wrongMarkes: Number
+        rightMarks: Number,
+        worngMarks: Number
     }],
-    totalMarkes: Number,
+    totalScore: Number,
     passingScore: Number,
     duration: Number,
     status: {

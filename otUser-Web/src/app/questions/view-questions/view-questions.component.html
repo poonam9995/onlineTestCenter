@@ -35,7 +35,8 @@
           <thead>
             <tr>
               <th scope="col">Sr No.</th>
-              <th scope="col"> Question
+              <th scope="col"> Question</th>
+
               <th scope="col">Opration</th>
             </tr>
           </thead>
@@ -44,12 +45,24 @@
               <td style="color:brown"> {{i + 1}} </td>
               <td>{{que.questionText}}</td>
               <td>
+
+
+
+
+                  <ng-template #popTemplate let-message="message">
+                      <a  class="btn action-btn" (click)='editQuestion(que._id)'>
+                          <i class="material-icons">edit</i>
+                    </a>
+                      <a class="btn action-btn">
+                        <i class="material-icons" (click)='deleteQuestion(que._id)'>delete</i>
+                      </a>
+                    </ng-template>
+                    <button type="button" class="btn btn-primary" [popover]="popTemplate" [popoverContext]="context"
+                      [adaptivePosition]="false" triggers="click"  [outsideClick]='true' placement="right">
+                      ...
+                    </button>
                   <!-- <a routerLink="/editQuestion/{{que._id}}">  <i class="material-icons">edit</i></a> -->
-                <a  class="btn action-btn" (click)='editQuestion(que._id)'>
-                    <i class="material-icons">edit</i>
-              </a>
-                <a class="btn action-btn">
-                  <i class="material-icons" (click)='deleteQuestion(que._id)'>delete</i></a>
+              
               </td>
             </tr>
           </tbody>

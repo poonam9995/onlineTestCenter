@@ -31,15 +31,15 @@ topic={
 }
 Questions={
     =>addQuestion
-    EditQuestion
-    DeleteQuestion
+    =>EditQuestion
+   => DeleteQuestion
     =>ViewQuestion
 }
 test-Templet={
-    addTestTemp
-    EditTestTemp
-    DeleteTestTemp
-    ViewTestTemp
+    =>addTestTemp
+    =>EditTestTemp
+    =>DeleteTestTemp
+    =>ViewTestTemp
 }
 
 

@@ -171,6 +171,9 @@ console.log(this.optionArray);
       if (res.message === 'Success') {              
         this.toastr.success(res.message, 'Record insert Successfully');
         this. ngOnInit();
+        this.optionArray=[];
+   this.CorrectAnsArray=[];
+        this.tagsArray = [];
       }
           
     });

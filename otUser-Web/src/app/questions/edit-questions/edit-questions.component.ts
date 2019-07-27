@@ -26,7 +26,7 @@ export class EditQuestionsComponent implements OnInit {
   newPref1 = [];
   closeBtnName: string;
   optionsArr: any = [];
-
+CorrectAnsRadio ;
   details: any = [];
   constructor(private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder,
     private http: HttpService,
@@ -108,14 +108,13 @@ export class EditQuestionsComponent implements OnInit {
         }
       });
 
-      console.log(this.newPref1);
+      console.log(res.data.correctAns);
       if (res.data.type == 'Multiple_Choice') {
         this.multipleChoice = true;
         this.multipleResponse = false;
-        this.updateQuestion.patchValue({
-          'correctAnswers': res.data.correctAnswers
-        });
+        this.CorrectAnsRadio= res.data.correctAns[0];
 
+     
       }
       else {
         this.multipleChoice = false;
@@ -125,10 +124,7 @@ export class EditQuestionsComponent implements OnInit {
         });
 
       }
-
     });
-
-
   }
   onAddCorrect(event) {
     const answer = event;
@@ -241,7 +237,6 @@ export class EditQuestionsComponent implements OnInit {
 
     // console.log(this.optionArray);   
     console.log(this.CorrectAnsArray);
-
     if (event.target.checked == true) {
       for (var i = 0; i < this.CorrectAnsArray.length; i++) {
         console.log(event.target.checked, id);
@@ -267,20 +262,18 @@ export class EditQuestionsComponent implements OnInit {
 
   }
   onSubmit() {
+    if(this.updateQuestion.value.correctAnswers === undefined || this.updateQuestion.value.correctAnswers === ""  ){
+      this.updateQuestion.value.correctAnswers=this.CorrectAnsRadio;
+    }
     console.log(this.updateQuestion.value);
     console.log(this.optionArray);
     console.log("***", this.CorrectAnsArray);
-    console.log("CorrectAns", this.updateQuestion.value.correctAnswers);
-    var correctAns;
-    if (this.updateQuestion.value.type == 'Multiple_Response') {
-      correctAns = this.CorrectAnsArray;
-    }
-    else {
-      correctAns = this.updateQuestion.value.correctAnswers;
-    }
-    console.log(correctAns);
+   if(this.updateQuestion.value.type === 'Multiple_Response')
+   {
+    this.updateQuestion.value.correctAnswers=this.CorrectAnsArray;
+   }
     const questions = {
-      "correctAnswers": correctAns,
+      "correctAnswers":this.updateQuestion.value.correctAnswers,
       "options": this.optionArray,
       "questionText": this.updateQuestion.value.questionText,
       'solution': this.updateQuestion.value.solution,
@@ -328,5 +321,12 @@ export class EditQuestionsComponent implements OnInit {
 
     }
     console.log(this.CorrectAnsArray);
+  }
+  correctAnsRadio(i){
+    if(i === undefined)
+    {
+      
+    }
+console.log(i);
   }
 }

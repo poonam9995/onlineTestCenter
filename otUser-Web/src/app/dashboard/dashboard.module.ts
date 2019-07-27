@@ -5,12 +5,13 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DefaultComponent } from './default/default.component';
 
 
+
 @NgModule({
   declarations: [DefaultComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
-   
+
   ]
 })
 export class DashboardModule { }

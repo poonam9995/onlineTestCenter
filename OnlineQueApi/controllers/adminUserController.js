@@ -80,7 +80,7 @@ exports.adminLogin = (req,res) => {
                     authId: respons[0]._id
                 }, process.env.JWT_KEY,
                     {
-                        expiresIn: "1h"
+                        expiresIn: "2h"
                     }
                 );
                 console.log(token);

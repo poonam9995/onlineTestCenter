@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { HttpService } from 'src/app/_shared/services/http/http.service';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { TopicModule } from '../topic.module';
 
 @Component({
   selector: 'app-add-topic',
@@ -17,6 +18,7 @@ export class AddTopicComponent implements OnInit {
   bsModalRef: BsModalRef;
   public displayButton = false;
   public SubjectName;
+  massage: boolean=false;
   constructor(private http: HttpService, private toastr: ToastrService, private modalService: BsModalService) { }
 
   ngOnInit() {
@@ -34,9 +36,21 @@ export class AddTopicComponent implements OnInit {
       console.log(res);
       this.topicData = res.data;
     });
+    console.log(this.topicData);
   }
   onSubmit() {
     console.log(this.addTopic.value);
+    console.log(this.topicData);
+    var count=0;
+    for(let i=0; i<this.topicData.length;i++)
+    {
+      if(this.topicData[i].topicName === this.addTopic.value.topicName && this.topicData[i].subjectId === this.addTopic.value.subjectId)
+      {
+       count++;
+      }
+    }
+    if(count <= 0)
+    {
     this.http.post('topic/addTopic', this.addTopic.value).subscribe((res: any) => {
       if (res.message === 'Error') {
         console.log(res);
@@ -49,11 +63,20 @@ export class AddTopicComponent implements OnInit {
       if (res.message === 'Success') {
         console.log(this.addTopic.value.subjectId);       
         this.toastr.success(res.message, 'Record insert Successfully');
-        this.displayTopic(this.addTopic.value.subjectId);       
+        this.displayTopic(this.addTopic.value.subjectId);
+        this.addTopic.patchValue({
+          topicName:''
+        })
       }
-     
-      this.addTopic.reset();
+    
+      //this.addTopic.reset();
     });
+    }
+    else{
+      this.toastr.warning(' Topic Already Exist.');
+ this.massage = true;
+    }
+   
   }
 
   displayTopic(event) {

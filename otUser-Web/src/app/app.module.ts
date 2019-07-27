@@ -15,13 +15,14 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AuthModule } from './auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { ToastrModule } from 'ngx-toastr';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, PopoverModule } from 'ngx-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap';
 import { SubjectModule } from './subject/subject.module';
 import { TopicModule } from './topic/topic.module';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { QuestionsModule } from './questions/questions.module';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { TestTempletModule } from './test-templet/test-templet.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +39,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     AuthModule,
     SubjectModule,
     TopicModule,   
+    TestTempletModule,
     ReactiveFormsModule,
     HttpClientModule,
     TypeaheadModule.forRoot(),
@@ -46,7 +48,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     ToastrModule.forRoot(),
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
-  
+    PopoverModule.forRoot()
   ],
   providers: [AuthGuardService],
   bootstrap: [AppComponent]

@@ -8,4 +8,6 @@ router.get('/findQuestions?:id',questionController.findQuestions);
 router.get('/QuestionById?:id',questionController.QuestionById);
 router.put('/updateQuestion?:id',questionController.updateQuestion);
 router.get('/questionUsingSubjectId?:subjectId',questionController.questionUsingSubjectId);
+router.get('/getQuestion',questionController.getQuestion);
+router.post('/getQueAsperTags',questionController.getQueAsperTags);
 module.exports = router;

@@ -1,3 +1,207 @@
-<p>
-  add-test-templet works!
-</p>
+<div class="login-container">
+  <div class="center-box">
+
+    <div class="form-Header">
+      <h3>Test Templet</h3>
+    </div>
+
+    <div class="card">
+      <form [formGroup]='AddTest' class='form' >
+
+        <div class="form-group row">
+          <div class="col-md-6" style='text-align:center'>
+            <label> Test Name : </label>
+          </div>
+          <div class="col-md-6">
+            <input type="text" formControlName="testName" class="form-control" (blur)='CheckUniqueTestName($event)'>
+            <div class="alert red-text"
+              *ngIf="AddTest.get('testName').hasError('required') && (AddTest.get('testName').touched || AddTest.get('testName').dirty) ">
+              Enter Test Name
+            </div>
+            <div class="alert red-text"
+            *ngIf="testerror">
+            {{testerror}}
+          </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6" style='text-align:center'>
+            <label>Description : </label>
+          </div>
+          <div class="col-md-6">
+            <textarea formControlName='description' class="form-control"></textarea>
+          
+          </div>
+        </div>
+        <div class='card'>
+          <div class="row">
+            <div class="form-group col-md-4">
+              <button type="button" class="btn btn-primary " (click)="openModal(template)"> <i
+                  class="material-icons">add</i>Select Questions
+              </button>
+            </div>
+            <div class="form-group col-md-8" *ngIf='Questioncount'
+              style="float: right; border: 1px rgb(92, 92, 92) solid;border-radius: 2px;padding: 10px;">
+              Question Count = <strong> {{Questioncount}}</strong>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-6" style='text-align:center'>
+              <label> Total Score : </label>
+            </div>
+            <div class="col-md-6">
+              <input type="text" formControlName="totalScore" class="form-control" readonly>
+              <!-- <div class="alert red-text"
+        *ngIf="AddTest.get('totalScore').hasError('required') && (AddTest.get('totalScore').touched || AddTest.get('totalScore').dirty) ">
+        Enter Test Name
+      </div> -->
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-6" style='text-align:center'>
+              <label>Passing Score: </label>
+            </div>
+            <div class="col-md-6">
+              <input type="text" formControlName="passScore" class="form-control">
+              <div class="alert red-text"
+          *ngIf="AddTest.get('passScore').hasError('required') && (AddTest.get('passScore').touched || AddTest.get('passScore').dirty) ">
+          Enter marks requered for pass the test 
+        </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-6" style='text-align:center'>
+              <label>Duration : </label>
+            </div>
+            <div class="col-md-6">
+              <input type="number" formControlName="duration" class="form-control">
+              <div class="alert red-text"
+            *ngIf="AddTest.get('duration').hasError('required') && (AddTest.get('duration').touched || AddTest.get('duration').dirty) ">
+            Enter duration in minutes
+          </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-6" style='text-align:center'>
+                <button type='submit' class="btn btn-primary " [disabled]="AddTest.controls['duration'].invalid"  (click)="onSubmit('Draft')"style="width:100px">Draft   </button>
+            </div> 
+            <div class="col-md-6">
+                <button type='submit' class="btn btn-primary" [disabled]="AddTest.controls['duration'].invalid"  (click)="onSubmit('Published')">Published</button>           
+            </div>
+          </div>
+        </div>
+     
+      </form>
+    </div>
+    <br>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button type="button" class="btn btn-default right"(click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body ">
+    <form [formGroup]='selectQuestions' class='form' (ngSubmit)='onsubmitOnTags()'>
+      <div class="row ">
+        <div class="col-md-7 ">
+
+          <tag-input formControlName="tag" [onlyFromAutocomplete]="true" (onAdd)='onAddtag($event)'
+            (onRemove)="onRemovetag($event)">
+            <tag-input-dropdown [showDropdownIfEmpty]="true" [appendToBody]='false' [autocompleteItems]='tags'>
+            </tag-input-dropdown>
+          </tag-input>
+
+
+          <!-- <input [typeahead]="tags" formControlName='tag' class='form-control' placeholder="Select tasg"> -->
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-info" type="submit">
+            <i class="material-icons">search</i> Search</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="card1" *ngIf='questions.length > 0;else elseBlock'>
+
+
+
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [value]="nontrade" (change)="selectAll($event)">
+        <label class="form-check-label">
+          Select All
+        </label>
+      </div>
+
+
+      <form [formGroup]='AddQuestions' class='form' (ngSubmit)='onsubmitForQuestionAdd()'>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Q.No.</th>
+                <th style="width: 2%">Select</th>
+                <th style="width: 80%">Questions</th>
+                <th style="width: 10%">Right Marks</th>
+                <th style="width: 10%">Worng Marks</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="Questions">
+              <tr *ngFor="let item of AddQuestions.get('Questions').controls; let i = index;" [formGroupName]="i">
+                <td><input type="hidden" formControlName='_id'  class='form-control'>{{i+1}} </td>
+                <td><input type="checkbox" formControlName='isSelected' [checked]="selectedAll" ></td>
+                <td><input type='text' formControlName='questionText' class='form-control' readonly></td>
+                <td><input type="text" formControlName='rightMarks' class='form-control'></td>
+                <td><input type="text" formControlName='worngMarks' class='form-control'></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class='col-md-3'>
+            <button type='submit' class="btn btn-primary">Add Questions</button>
+          </div>
+          <div class='col-md-6'>
+            <span *ngIf='Questioncount'
+              style="float:right;color: red;border-radius: 2px;padding: 10px;text-size-adjust: 10px;">
+              Question Count = <strong> {{Questioncount}}</strong>
+            </span>
+          </div>
+          <div class='col-md-3'>
+              <button type="button" class="btn btn-default right"(click)="close()" >Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <ng-template   #elseBlock>
+      <!-- <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Q.No.</th>
+             
+              <th style="width: 80%">Questions</th>
+              <th style="width: 10%">Right Marks</th>
+              <th style="width: 10%">Worng Marks</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="Questions">
+            <tr *ngFor="let item of addedQuestions; let i = index;">
+              <td>{{i+1}} </td>              
+              <td> {{item.question}}</td>
+              <td>{{item.rightMarks}}</td>
+              <td>{{item.worngMarks}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div> -->
+    </ng-template>
+  </div>
+
+</ng-template>

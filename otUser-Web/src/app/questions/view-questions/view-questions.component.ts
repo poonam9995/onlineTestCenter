@@ -11,7 +11,6 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class ViewQuestionsComponent implements OnInit {
   bsModalRef: BsModalRef;
-
   topic: any;
   selected: string;
   data = [];
@@ -31,7 +30,7 @@ export class ViewQuestionsComponent implements OnInit {
 
     this.http.get('questions/findQuestions').subscribe((res: any) => {
       this.question = res.data;
-      //console.log(this.question);
+     
     });
   }
 
@@ -52,12 +51,10 @@ export class ViewQuestionsComponent implements OnInit {
         var selectedQuestion =[];
         for (var i = 0; i < this.topic.length; i++) {
           for (var j = 0; j < this.question.length; j++) {
-            if (this.topic[i]._id == this.question[j].topicId){
-             // console.log(this.question[j]);
+            if (this.topic[i]._id == this.question[j].topicId){           
               selectedQuestion.push(this.question[j]);
             }
-          }
-  
+          }  
         }
         console.log(selectedQuestion);
         this.question = selectedQuestion;
@@ -105,6 +102,7 @@ export class ViewQuestionsComponent implements OnInit {
         this.typeHeadSelectedTopic(res.data.topicId);
       }
       if (res.message === 'Success') {
+        console.log(res);
         this.toastr.success(res.message, 'Record Deleted Successfully');
         console.log(res.data.topicId);
         this.typeHeadSelectedTopic(res.data.topicId);

@@ -1,3 +1,264 @@
-<p>
-  edit-test-templet works!
-</p>
+<div class="login-container">
+  <div class="center-box">
+    <div class="form-Header">
+      <h3>Test Templet</h3>
+    </div>
+    <div >
+      <form [formGroup]='updateTest' class='form'>
+        <div class="card">
+           <div class="form-Header">
+            <h3>Update Test </h3>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class=" row">
+                <div class="col-md-4">
+                  <label> Test Name : </label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" formControlName="testName" class="form-control">
+                </div>
+              </div>
+              <br>
+              <div class=" row">
+                <div class="col-md-4">
+                  <label> Description :</label>
+                </div>
+                <div class="col-md-8">
+                  <textarea type="text" formControlName="description" class="form-control">
+                 </textarea>
+                </div>
+              </div>
+              <br>
+              <div class=" row">
+                <div class="col-md-4">
+                  <label> Total No. Of Questions:</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" formControlName="count" class="form-control" readonly>
+                </div>
+              </div>
+              <br>
+            </div>
+            <br>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-4">
+                  <label> Total Score : </label>
+                </div>
+                <div class="col-md-7">
+                  <input type="text" formControlName="totalScore" class="form-control" readonly>
+
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Passing Score test: </label>
+                </div>
+                <div class="col-md-7">
+                  <input type="text" formControlName="passScore" class="form-control">
+
+                </div>
+              </div>
+              <br>
+              <div class=" row">
+                <div class="col-md-4">
+                  <label> Duration for test : </label>
+                </div>
+                <div class="col-md-7">
+                  <input type="text" formControlName="duration" class="form-control">
+                  <div class="alert red-text"
+                    *ngIf="updateTest.get('duration').hasError('required') && (updateTest.get('duration').touched || updateTest.get('duration').dirty) ">
+                    Enter test Duration
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class=" row">
+                <div class="col-md-4">
+                  <label> Status:</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" formControlName="status" class="form-control" readonly>
+                </div>
+              </div>
+              <br>
+          
+
+            </div>
+          </div>
+
+          <div class="row" style="text-align :left">
+            <div class="form-group col-md-6">
+              <button type="button" class="btn btn-primary" (click)="openModal(template)"> <i
+                  class="material-icons">add</i>Add new Questions
+              </button>
+            </div>
+            <div class="form-group col-md-6">
+              <div class="form-group row">
+                <div class="col-md-6" style='text-align:center'>
+                  <button type='submit' class="btn btn-info " [disabled]="updateTest.controls['duration'].invalid"
+                    (click)="onSubmit('Draft')" style="width:100px">Draft </button>
+                </div>
+                <div class="col-md-6">
+                  <button type='submit' class="btn btn-success " [disabled]="updateTest.controls['duration'].invalid"
+                    (click)="onSubmit('Published')">Published</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+      <div class="card">
+          <div class="form-Header">
+              <h3>List Of Questions </h3>
+            </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Q.No.</th>
+                <th style="width: 80%">Questions</th>
+                <th style="width: 10%">Right Marks</th>
+                <th style="width: 10%">Worng Marks</th>
+                <th style="width: 2%">Operation</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr *ngFor="let item of testData; let i = index;">
+
+                <td>{{i+1}}</td>
+
+                <td>{{item.questionText}}</td>
+                <td>{{item.rightMarks}}</td>
+                <td>{{item.worngMarks}}</td>
+                <td>
+
+                  <ng-template #popTemplate let-message="message">
+                    <a class="btn action-btn">
+                      <i class="material-icons" (click)='deleteQuestions(item._id)'>delete</i>
+                    </a>
+                    <a  class="btn action-btn" (click)='editQuestion(item._id)'>
+                        <i class="material-icons">edit</i>
+                  </a>
+                  </ng-template>
+                  <button type="button" class="btn btn-primary" [popover]="popTemplate" [popoverContext]="context"
+                    [adaptivePosition]="false" triggers="click"  [outsideClick]='true' placement="right">
+                    ...
+                  </button>
+  </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+<br>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button type="button" class="btn btn-default right" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body ">
+    <form [formGroup]='selectQuestions' class='form' (ngSubmit)='onsubmitOnTags()'>
+      <div class="row ">
+        <div class="col-md-7 ">
+
+          <tag-input formControlName="tag" [onlyFromAutocomplete]="true" (onAdd)='onAddtag($event)'
+            (onRemove)="onRemovetag($event)">
+            <tag-input-dropdown [showDropdownIfEmpty]="true" [appendToBody]='false' [autocompleteItems]='tags'>
+            </tag-input-dropdown>
+          </tag-input>
+
+
+          <!-- <input [typeahead]="tags" formControlName='tag' class='form-control' placeholder="Select tasg"> -->
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-info" type="submit">
+            <i class="material-icons">search</i> Search</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="card1" *ngIf='questions.length > 0;else elseBlock'>
+
+
+
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox"  (change)="selectAll($event)">
+        <label class="form-check-label">
+          Select All
+        </label>
+      </div>
+
+      <form [formGroup]='AddQuestions' class='form' (ngSubmit)='onsubmitForQuestionAdd()'>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Q.No.</th>
+                <th style="width: 2%">Select</th>
+                <th style="width: 80%">Questions</th>
+                <th style="width: 10%">Right Marks</th>
+                <th style="width: 10%">Worng Marks</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="Questions">
+              <tr *ngFor="let item of AddQuestions.get('Questions').controls; let i = index;" [formGroupName]="i">
+                <td><input type="hidden" formControlName='_id' class='form-control'>{{i+1}} </td>
+                <td><input type="checkbox" formControlName='isSelected'  [checked]="selectedAll"></td>
+                <td><input type='text' formControlName='questionText' class='form-control' readonly></td>
+                <td><input type="number" formControlName='rightMarks' class='form-control'></td>
+                <td><input type="number" formControlName='worngMarks' class='form-control'></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class='col-md-3'>
+            <button type='submit' class="btn btn-primary">Add Questions</button>
+          </div>
+          <div class='col-md-6'>
+            <span *ngIf='Questioncount'
+              style="float:right;color: red;border-radius: 2px;padding: 10px;text-size-adjust: 10px;">
+              Question Count = <strong> {{Questioncount}}</strong>
+            </span>
+          </div>
+          <div class='col-md-3'>
+            <button type="button" class="btn btn-default right" (click)="close()">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <ng-template #elseBlock>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Q.No.</th>
+              <th style="width: 80%">Questions</th>
+              <th style="width: 10%">Right Marks</th>
+              <th style="width: 10%">Worng Marks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td>Records Not Available</td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+  </div>
+</ng-template>

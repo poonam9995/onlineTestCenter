@@ -15,18 +15,15 @@ const routes: Routes = [{
   children:
     [{
       path: 'addQuestion',
-      component: AddQuestionComponent,
-    canActivate:[AuthGuardService]
+      component: AddQuestionComponent,    
     },
     {
       path: 'viewQuestion',
-      component: ViewQuestionsComponent,
-    canActivate:[AuthGuardService]
+      component: ViewQuestionsComponent,    
     },
     {
       path: 'editQuestion/:id',
-      component: EditQuestionsComponent,     
-      canActivate:[AuthGuardService]
+      component: EditQuestionsComponent,   
     }
 
   ],

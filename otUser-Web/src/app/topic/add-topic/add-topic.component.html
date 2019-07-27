@@ -27,7 +27,12 @@
             <div class="alert red-text"
               *ngIf="addTopic.get('topicName').hasError('required') && (addTopic.get('topicName').touched || addTopic.get('topicName').dirty) ">
               Enter Topic Name
-            </div>            
+            </div>
+            <div class="alert red-text"
+            *ngIf="massage">
+            Topic Already Exist.
+          </div>
+                   
           </div>
           <div class="col-md-4">
             <button type="submit"  [disabled]="addTopic.controls['topicName'].invalid"

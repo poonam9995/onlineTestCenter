@@ -62,7 +62,7 @@
                 </select>
                 <div class="alert red-text"
                   *ngIf="updateQuestion.get('type').hasError('required') && (updateQuestion.get('type').touched || updateQuestion.get('type').dirty) ">
-                  Enter Question Text
+                  Select Option
                 </div>
               </div>
             </div>
@@ -89,7 +89,7 @@
           <div class="form-group col-md-9" style="display:inline">
             <div class="row">
               <div class="col-md-3" formArrayName="options"
-                *ngFor="let item of updateQuestion.get('options').controls; let i = index;">
+                *ngFor="let item of  updateQuestion.get('options').controls; let i = index;">
                 <div class ='form-group row'>
                 <div class=" col-md-11"  [formGroupName]="i">
                   <input type="text" formControlName='id' (blur)="addOptions($event,i+1)" class="form-control">
@@ -137,7 +137,7 @@
           <div class="col-md-9">
             <div class="row">
               <div class="form-group col-md-3" *ngFor="let option of optionArray; let i = index;">
-                <input type="radio" formControlName='correctAnswers' value="{{option.id}}" [checked]='newPref1[i]'> {{option.name}}
+                <input type="radio" formControlName='correctAnswers' value="{{option.id}}" [checked]='newPref1[i]' (change)='correctAnsRadio($event,i+1)'> {{option.name}}
               </div>
             </div>
           </div>

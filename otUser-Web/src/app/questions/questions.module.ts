@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TagInputModule } from 'ngx-chips';
 import { ViewQuestionsComponent } from './view-questions/view-questions.component';
 import { EditQuestionsComponent } from './edit-questions/edit-questions.component';
+import { PopoverModule } from 'ngx-bootstrap';
 @NgModule({
   declarations: [AddQuestionComponent, ViewQuestionsComponent, EditQuestionsComponent],
   imports: [
@@ -14,7 +15,8 @@ import { EditQuestionsComponent } from './edit-questions/edit-questions.componen
     QuestionsRoutingModule,
     ReactiveFormsModule,
     TagInputModule,
-    TypeaheadModule.forRoot()
+    TypeaheadModule.forRoot(),
+    PopoverModule.forRoot()
   ]
 })
 export class QuestionsModule { }
