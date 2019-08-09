@@ -47,46 +47,76 @@ exports.addQuestion = (req, res) => {
 }
 
 exports.deleteQuestion = (req, res) => {
+    testTemplet.find({ "questions.question": req.params.id }).select('_id').exec().then((resp1) => {
+        console.log(resp1);
+        console.log(req.params.id);
+        testTemplet.updateMany({}, { $pull: { questions: { question: req.params.id } } }, { upsert: true }).then(async (response, error) => {
+            if (error) {
+                res.json({
+                    message: 'Error',
+                    data: error
+                });
+            }
+            if (response) {
+                console.log(resp1[0]._id);
+                for (let i = 0; i < resp1.length; i++) {
+                    var result = await testTemplet.find({ _id: resp1[i]._id }).exec().then(async (responsefortesttmp) => {
+                        console.log('testtemp1', responsefortesttmp)
+                        var rightm = 0
+                        if (responsefortesttmp[0].questions.length !== 0) {
+                            for (let i = 0; i < responsefortesttmp[0].questions.length; i++) {
+                                rightm = rightm + responsefortesttmp[0].questions[i].rightMarks;
+                            }
+                            console.log(rightm);
+                            var resultOfUpdate = await testTemplet.updateOne({ _id: responsefortesttmp[0]._id }, { $set: { 'totalScore': rightm } }).then((resp2, error) => {
+                                if (error) {
+                                    console.log(error);
+                                }
+                                else {
+                                    console.log(resp2);
+                                    return resp2;
+                                }
 
-    console.log(req.params.id);
-    testTemplet.updateMany({},{ $pull: { questions: {question: req.params.id }}},{upsert:true}).then((response, error) => {
-        if (error) {
-            res.json({
-                message: 'Error',
-                data: error
-            });
-        }
-        if (response){
-         console.log(response);  
-            // Questions.findByIdAndDelete({ _id: req.params.id }, (error, response) => {
-            //     if (error) {
-            //         res.json({
-            //             message: 'Error',
-            //             data: error
-            //         });
-            //     }
-            //     if (response) {
-            //         res.json({
-            //             message: 'Success',
-            //             data: response
-            //         });
-            //         console.log(response);
-            //     }
-            //     else {
-            //         res.json({
-            //             message: 'Failed'
-            //         });
+                            });
+                        } else {
+                            var resultOfDelete = await testTemplet.findByIdAndDelete({ _id: responsefortesttmp[0]._id }).then((responseOfDeleteTest, error) => {
+                                if (error) { console.log(error); }
+                                if (responseOfDeleteTest) { console.log(responseOfDeleteTest); }
+                                else { console.log("record not found"); }
+                            });
+                        }
+                    });
+                    Questions.findByIdAndDelete({ _id: req.params.id }).then((response) => {
+                        if (error) {
+                            res.json({
+                                message: 'Error',
+                                data: error
+                            });
+                        }
+                        if (response) {
+                            res.json({
+                                message: 'Success',
+                                data: response
+                            });
+                            console.log(response);
+                        }
+                        else {
+                            res.json({
+                                message: 'Failed'
+                            });
 
-            //     }
-            // });
-        }
-        else {
-            console.log(response);
-            res.json({
-                message: 'Failed'
-            });
+                        }
+                    });
+                }
+            }
+            else {
+                console.log(response);
+                res.json({
+                    message: 'Failed'
+                });
 
-        }
+            }
+        });
     });
 
 }
@@ -276,4 +306,16 @@ exports.getQueAsperTags = (req, res) => {
 
             }
         });
+}
+async function updateTotalScore(id) {
+    console.log(id);
+    try {
+
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).send()
+    }
+
+
 }

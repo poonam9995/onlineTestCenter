@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { EditQuestionsComponent } from '../edit-questions/edit-questions.component';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import Swal from 'sweetalert2'
 @Component({
   selector: 'app-view-questions',
   templateUrl: './view-questions.component.html',
@@ -90,7 +91,6 @@ export class ViewQuestionsComponent implements OnInit {
   }
   deleteQuestion(id) {
     console.log(id);
-
     this.http.delete('questions/deleteQuestion' + `/${id}`).subscribe((res: any) => {
       if (res.message === 'Error') {
         console.log(res);
@@ -106,7 +106,7 @@ export class ViewQuestionsComponent implements OnInit {
         this.toastr.success(res.message, 'Record Deleted Successfully');
         console.log(res.data.topicId);
         this.typeHeadSelectedTopic(res.data.topicId);
-
+        this. ngOnInit();
       }
     });
 

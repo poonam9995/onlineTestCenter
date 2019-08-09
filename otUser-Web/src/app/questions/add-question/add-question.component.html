@@ -51,10 +51,20 @@
                 <label>Question Type:</label>
               </div>
               <div class='col-md-8'>
-                <select formControlName='type' class="form-control" (change)="multipleSelection($event)">
+                <div class="row">
+                  <div class = 'col-md-6'>
+                    <input type='radio' formControlName='type'  value="Multiple_Choice" (click)="multipleSelection($event)">  Multiple_Choice
+                  </div>
+                    <div class = 'col-md-6'>
+                    <input type='radio' formControlName='type' value="Multiple_Response" (click)="multipleSelection($event)">  Multiple_Response
+
+                  </div>
+
+
+                <!-- <select formControlName='type' class="form-control" (change)="multipleSelection($event)">
                   <option value="Multiple_Choice">Multiple_Choice</option>
                   <option value="Multiple_Response">Multiple_Response</option>
-                </select>
+                </select> -->
                 <div class="alert red-text"
                   *ngIf="addQuestion.get('type').hasError('required') && (addQuestion.get('type').touched || addQuestion.get('type').dirty) ">
                   Select Option
@@ -63,6 +73,8 @@
             </div>
           </div>
         </div>
+        </div>
+
         <div class="form-group row">
           <div class="col-md-3" style='text-align:center'>
             <label> Question Text : </label>
@@ -76,25 +88,31 @@
           </div>
         </div>
         <div class="row" style='text-align:center'>
-          <div class="form-group col-md-3">
-            <button type="button" class="btn btn-primary " (click)="addgroupClick()"><i class="material-icons">add</i>
+          <div class="form-group col-md-3"  >
+            <button type="button" class="btn btn-primary " *ngIf="addQuestion.get('options').controls.length< 6" (click)="addgroupClick()"><i class="material-icons">add</i>
               Add Option
-
             </button>
           </div>
-          <div class="form-group col-md-9" style="display:inline">
+          <div class="form-group col-md-9" style="display:inline; padding: 9px; border: 0.5px solid rgb(195, 195, 195);">
             <div class="row">
-              <div class="input-group mb-3" formArrayName="options"
-                *ngFor="let item of addQuestion.get('options').controls; let i = index;">
-                <div class=" col-md-7" [formGroupName]="i">
-                  <input type="text" formControlName='option' placeholder="Enter Options"
+              <div class="input-group mb-12" formArrayName="options" *ngFor="let item of addQuestion.get('options').controls; let i = index;">
+                <div class=" col-md-12"   [formGroupName]="i">
+                  <div class="row"  style="padding: 9px ; ">
+                      <div class="col-md-1">
+                          {{i + 1}}
+                      </div>
+                      <div class=" col-md-9">
+                 <input type="text" formControlName='option' placeholder="Enter Options"
                     (blur)="addOptions($event,i+1)" class="form-control" aria-label="Recipient's username"
                     aria-describedby="basic-addon2">
-                </div>
-                <div class="input-group-append">
+                  </div>
+                   <div class="col-md-2 input-group-append" >
                   <a class="btn action-btn">
-                    <i class="material-icons" (click)='deleteRow(i)'>delete</i></a>
+                    <i class="material-icons " style="background-color:red ;padding: 5px;" (click)='deleteRow(i)'>delete</i></a>
                 </div>
+                  </div>
+                </div>
+              
               </div>
 
 
@@ -114,7 +132,6 @@
               <div class="alert red-text" *ngIf="addQuestion.get('options').errors?.optionerror">
                 Add minimum 2 Options and Maximun 6 Options
               </div>
-
             </div>
           </div>
         </div>
@@ -177,7 +194,7 @@
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary float-left"> Submit </button>
+        <button type="submit" class="btn btn-primary float-left" [disabled]="addQuestion.controls['type'].invalid"> Submit </button>
       </form>
 
     </div>

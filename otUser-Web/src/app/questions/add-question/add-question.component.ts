@@ -22,6 +22,7 @@ export class AddQuestionComponent implements OnInit {
   multipleChoice: boolean;
   public CorrectAnsArray: any = [];
   tagsArray: any = [];
+  countOptionArray =0;
   constructor(private formBuilder: FormBuilder, private http: HttpService,private toastr : ToastrService) { }
 
   ngOnInit() {
@@ -36,7 +37,7 @@ export class AddQuestionComponent implements OnInit {
       questionText: new FormControl('', Validators.required),
       type: new FormControl('', Validators.required),
       correctAnswers: new FormControl('', Validators.required),
-      options: new FormArray([this.createOption()], commonValidation.checkOption),
+      options: new FormArray([this.createOption(),this.createOption()], [commonValidation.checkOption]),
       solution: new FormControl(''),
       tags: new FormControl('')
     });
@@ -50,6 +51,8 @@ export class AddQuestionComponent implements OnInit {
     });
   }
   addgroupClick(): void {
+    this.countOptionArray ++;
+ console.log(this.countOptionArray);
     (<FormArray>this.addQuestion.get('options')).push(this.createOption());
   }
   onAddCorrect(event) {
@@ -105,7 +108,7 @@ export class AddQuestionComponent implements OnInit {
         }
         counter++;
       }
-      if(counter==this.optionArray.length){
+      if(counter==this.optionArray.length){   
         this.optionArray.push({ id: i, name: event.target.value});
       }
       
@@ -142,6 +145,8 @@ console.log(this.optionArray);
     }
   }
   onSubmit() {
+    console.log(this.addQuestion.get('options'))
+    if(this.addQuestion.valid){
     console.log(this.addQuestion.value);
     console.log(this.optionArray);
     console.log("***", this.CorrectAnsArray);
@@ -177,6 +182,10 @@ console.log(this.optionArray);
       }
           
     });
+  }
+  else{
+
+  }
   }
 
   deleteRow(index: number) {

@@ -4,6 +4,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HttpService } from 'src/app/_shared/services/http/http.service';
 import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
 import { ToastrService } from 'ngx-toastr';
+import { commonValidation } from 'src/app/auth/common/validation/common.validation';
 
 @Component({
   selector: 'app-add-test-templet',
@@ -48,7 +49,7 @@ export class AddTestTempletComponent implements OnInit {
       tag: new FormControl('')
     });
     this.AddQuestions = new FormGroup({
-      Questions: new FormArray([])
+      Questions: new FormArray([],[Validators.required,commonValidation.checkQuestions])
     });
     this.http.get('questions/getQuestion').subscribe((res: any) => {
       console.log(res);
@@ -69,13 +70,14 @@ export class AddTestTempletComponent implements OnInit {
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'gray modal-lg' });
   }
+  onSubmit() {
+    if(this.AddTest.valid){
 
-
-  onSubmit(status) {
+   
     console.log(this.AddTest.value);
     console.log(status);
     console.log(this.addedQuestions);
-    this.AddTest.value.status = status;
+    this.AddTest.value.status = 'Draft';
     this.AddTest.value.questions = this.addedQuestions;
     console.log(this.AddTest.value);
     if (this.testerror === 'Test Already Persent in Database.Plz Update it') {
@@ -99,13 +101,18 @@ export class AddTestTempletComponent implements OnInit {
         }
         if (res.message === 'Success') {
           this.toastr.success(res.message, 'Record insert Successfully');
-          this.selectQuestions.reset();
-          this.AddQuestions.reset();
-          this.AddTest.reset();
           this.Questioncount = 0;
+          this.addedQuestions = [];
+          this.id=[];
+          this.totalMarks = 0;
+          this.ngOnInit();
+        
         }
       });
     }
+  }else{
+    this.toastr.warning('some fields are Remains');
+  }
   }
 
   onsubmitOnTags() {
@@ -131,7 +138,7 @@ export class AddTestTempletComponent implements OnInit {
         tag: this.CorrectAnsArray
       }
    //   console.log(params);
-      this.http.post('questions/ge element.checked=event.target.checked;Tags', params).subscribe((res: any) => {
+      this.http.post('questions/getQueAsperTags', params).subscribe((res: any) => {
 
         this.questions = [];
         this.questions = res.data; //element.checked=event.target.checked;
@@ -218,9 +225,13 @@ export class AddTestTempletComponent implements OnInit {
       }
 
     }
- //   console.log(this.addedQuestions);
+    this.AddTest.patchValue({
+      'totalScore': this.totalMarks,
+    });
+    console.log(this.totalMarks);
  //   console.log(this.id);
     this.Questioncount = this.addedQuestions.length;
+    this.CorrectAnsArray = [];
   }
   onAddtag(event) {
     const answer = event;
@@ -242,10 +253,8 @@ export class AddTestTempletComponent implements OnInit {
   }
 
   selectAll(event) {
-   // console.log(event.target.checked);
-      
-    var question=(<FormArray>this.AddQuestions.get('Questions'));
-    
+  
+    var question=(<FormArray>this.AddQuestions.get('Questions'));    
     question.value.forEach(element => {
       element.isSelected = event.target.checked;
     //  console.log(element);
@@ -256,9 +265,7 @@ export class AddTestTempletComponent implements OnInit {
   close() {
    // console.log(this.addedQuestions);   
     console.log(this.totalMarks);
-    this.AddTest.patchValue({
-      'totalScore': this.totalMarks,
-    });
+  
     this.modalRef.hide();
   }
   CheckUniqueTestName(event) {

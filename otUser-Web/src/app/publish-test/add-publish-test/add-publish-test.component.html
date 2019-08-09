@@ -1,0 +1,87 @@
+<div class="login-container">
+  <div class="center-box">
+
+    <div class="form-Header">
+      <h4>Publish Test For Condidates</h4>
+    </div>
+    <div class="card">
+      <form [formGroup]='AddPublishedTest' class='form' (ngSubmit)='onSubmit()'>
+      <div class="form-group row">
+        <div class="col-md-4" style='text-align:center'>
+          <label> Title: </label>
+        </div>
+        <div class="col-md-7">
+          <input type="text" formControlName='title' class='form-control'>
+          <!-- <div class="alert red-text"
+                  *ngIf="addQuestion.get('subjectId').hasError('required') && (addQuestion.get('subjectId').touched || addQuestion.get('subjectId').dirty) ">
+                  Select Subject Name
+                </div> -->
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-4" style='text-align:center'>
+          <label> Description: </label>
+        </div>
+        <div class="col-md-7">
+          <textarea type="text" formControlName='description' class='form-control'>
+              </textarea>
+          <!-- <div class="alert red-text"
+                    *ngIf="addQuestion.get('subjectId').hasError('required') && (addQuestion.get('subjectId').touched || addQuestion.get('subjectId').dirty) ">
+                    Select Subject Name
+                  </div> -->
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-4" style='text-align:center'>
+          <label> Candidate Details: </label>
+        </div>
+        <div class="col-md-7">
+          <input type="file"  formControlName='file' class='form-control' (change)='onFileChange($event)'>
+          <!-- <div class="alert red-text"
+                      *ngIf="addQuestion.get('subjectId').hasError('required') && (addQuestion.get('subjectId').touched || addQuestion.get('subjectId').dirty) ">
+                      Select Subject Name
+                    </div> -->
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-4" style='text-align:center'>
+          <label> Test List: </label>
+        </div>
+        <div class="col-md-7">
+          <select  class='form-control'formControlName='testId'>
+            <option  *ngFor='let test of testData;let i = index' value="{{test._id}}">{{test.testName}}</option>
+           
+          </select>
+          <!-- <div class="alert red-text"
+                        *ngIf="addQuestion.get('subjectId').hasError('required') && (addQuestion.get('subjectId').touched || addQuestion.get('subjectId').dirty) ">
+                        Select Subject Name
+                      </div> -->
+        </div>
+      </div>
+      <div class="form-group row">
+          <div class="col-md-4" style='text-align:center'>
+            <label> Date For Test: </label>
+          </div>
+          <div class="col-xs-12 col-12 col-md-7 form-group">
+              <input formControlName='testDate'
+                     type="text"
+                     placeholder="Datepicker"
+                     class="form-control"
+                     bsDatepicker>
+                      <!-- <div class="alert red-text"
+                        *ngIf="addQuestion.get('subjectId').hasError('required') && (addQuestion.get('subjectId').touched || addQuestion.get('subjectId').dirty) ">
+                        Select Subject Name
+                      </div> -->
+            </div>
+         
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+        <button type="submit" class="btn btn-primary float-right"> Submit </button>
+      </div>
+      </div>
+    </form>
+    </div>
+    <br>
+  </div>
+</div>

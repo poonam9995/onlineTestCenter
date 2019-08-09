@@ -1,0 +1,49 @@
+.login-container {
+
+    .center-box {
+        margin-top: 2%;
+        vertical-align: middle;
+        background-color: rgb(230, 230, 230);
+    }
+    .card {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 10px;
+        width: 85%;
+        padding: 20px;
+        border: 1px rgb(177, 177, 177) solid;
+    }
+
+   
+}
+
+.form-Header {
+    padding-top: 10px;
+    font-size: 20px;
+    font-family: verdana;
+    text-align: center;
+    text-decoration: underline;
+    height: 70px;
+}
+table{
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+  thead {
+      font-size: 13px;
+      background-color:rgb(187, 200, 202)
+  }
+  th{
+      color:black;
+  }
+ 
+  tbody{
+      background-color:white;
+  }
+    tr.hover{
+      background-color: rgb(67, 99, 145)
+   }
+   .red-text{
+       color:red;
+   }

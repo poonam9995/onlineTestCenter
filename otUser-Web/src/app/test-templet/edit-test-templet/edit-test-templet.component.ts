@@ -129,15 +129,16 @@ console.log(res.data);
 
 
   }
-  onsubmitForQuestionAdd() {
-    // console.log('before question add',this.testData);
-    // console.log(this.AddQuestions.get('Questions').value);
-  
+  onsubmitForQuestionAdd(){  
+    console.log( this.updateTest.value.totalScore);
+    this.totalMarks = this.updateTest.value.totalScore;
+    console.log(this.totalMarks);
       for (let i = 0; i < this.AddQuestions.get('Questions').value.length; i++) {    //console.log(this.AddQuestions.get('Questions').value[i])
         if (this.AddQuestions.get('Questions').value[i].isSelected) {
           var check = this.id.includes(this.AddQuestions.get('Questions').value[i]._id);
           console.log(check);
           if (!check) {
+          
           this.testData.push({
             '_id': this.AddQuestions.get('Questions').value[i]._id,
             'questionText':this.AddQuestions.get('Questions').value[i].questionText,
@@ -145,19 +146,32 @@ console.log(res.data);
             'worngMarks': this.AddQuestions.get('Questions').value[i].worngMarks
           });
           this.id.push(this.AddQuestions.get('Questions').value[i]._id);
+          this.totalMarks += +this.AddQuestions.get('Questions').value[i].rightMarks;
         }
+      }
+      else{
+        this.totalMarks -= -this.AddQuestions.get('Questions').value[i].rightMarks;
       }
       }   
     console.log(this.testData);
     console.log(this.id);
     this.Questioncount = this.testData.length;
     this.selectQuestions.reset();
-this.AddQuestions.reset() ;
+
+this.updateTest.patchValue({
+  'totalScore': this.totalMarks,
+  'count':this.testData.length
+});
+console.log(this.totalMarks);
+//   console.log(this.id);
+
+this.Questioncount = this.addedQuestions.length;
+this.CorrectAnsArray = [];
  }
-  onSubmit(status) { 
+  onSubmit() { 
     console.log(this.updateTest.value, this.testid);
    console.log(this.testData);
-    this.updateTest.value.status = status;
+    this.updateTest.value.status = 'Draft';
     var updatedQuestions =[];
   for(let i =0; i<this.testData.length;i++)
   {
@@ -184,7 +198,8 @@ var params={
         }
         if (res.message === 'Success') {
           this.toastr.success(res.message, 'Record Updated Successfully');
-     
+     this.router.navigate(['/TestTemplet/viewTestTemplet']);
+    
         }
   });
     console.log(this.updateTest.value,updatedQuestions);
@@ -205,24 +220,13 @@ var params={
       }
     }
     console.log(this.CorrectAnsArray);
-
   }
   close() {
-    console.log(this.testData);
-    for (let i = 0; i < this.testData.length; i++) {
-      console.log(this.testData[i].rightMarks);
-      this.totalMarks += +this.testData[i].rightMarks;
-    }
-    console.log(this.totalMarks);
-    this.updateTest.patchValue({
-      'totalScore': this.totalMarks,
-      'count':this.testData.length
-    });
+    console.log(this.testData);    
     this.modalRef.hide();
+    this.CorrectAnsArray=[];
   }
   deleteQuestions(id){
-
-
     Swal.fire({
       title: 'Are you sure To delete this question?',
       text: "You won't be able to revert this!",
@@ -234,13 +238,21 @@ var params={
     }).then((result) => {
       if (result.value) {
 
-
+       
         for(let i =0; i<this.testData.length;i++)
         {
+          console.log(this.testData[i], this.updateTest.value.totalScore);
           if(this.testData[i]._id === id){
+     
+        this.totalMarks = this.updateTest.value.totalScore - this.testData[i].rightMarks;
         this.testData.splice(i,1);
           }
+       
         }
+        this.updateTest.patchValue({
+          'totalScore': this.totalMarks,
+          'count':this.testData.length
+        });
         Swal.fire(
           'Deleted!',
           'Your file has been deleted.',

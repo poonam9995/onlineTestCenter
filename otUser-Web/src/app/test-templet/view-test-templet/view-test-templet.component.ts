@@ -35,5 +35,31 @@ public testInfo = [];
         this.ngOnInit();
       }
     });
-  };
+  }
+  UpdateStatus(status, id){
+  console.log(status,id);
+  var data={
+    status: status
+  }
+  var params={
+    id:id
+  }
+  console.log(params);
+  this.http.put('testTemplet/updateTestTempStatus',data,params).subscribe((res : any)=>{
+    if (res.message === 'Error') {
+      console.log(res);
+      this.toastr.error('Error Occure');
+    }
+    if (res.message === 'Record Not Found') {
+      console.log(res);
+      this.toastr.warning(res.message, 'Record is not deleted');
+    }
+    if (res.message === 'Success') {
+      this.toastr.success(res.message, 'Test Ready to Published');
+      this.ngOnInit();
+    } 
+    console.log(res);
+  });
+   
+}
 }

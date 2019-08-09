@@ -17,7 +17,6 @@ children:
  component:AddTopicComponent
 }],
 canActivate:[AuthGuardService]
-
 }];
 
 @NgModule({

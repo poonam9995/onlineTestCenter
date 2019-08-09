@@ -1,0 +1,73 @@
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <a class="navbar-brand" [routerLink]="['/dashboard/default']">OnlineTestCenter </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- <div class="collapse navbar-collapse" id="navbarCollapse">
+           
+           
+                <ul class="navbar-nav mr-auto">
+                      <li class="nav-item">
+                              <a class="nav-link" [routerLink]="['/subject/addSubject']">Subject</a></li>
+                          
+                          <li class="nav-item">
+                                  <a class="nav-link"[routerLink]="['/topic/addTopic']">Topic</a></li>
+                             
+                              <li class="nav-item">
+                                      <div class="dropdown">
+                                              <button class="dropbtn">Question</button>
+                                              <div class="dropdown-content">
+                                                <a [routerLink]="['/Questions/addQuestion']">Add Question</a>
+                                                <a [routerLink]="['/Questions/viewQuestion']">View Question</a>
+                                      
+                                              </div>
+                                            </div>
+                              </li>
+                              <li class="nav-item">
+                                      <div class="dropdown">
+                                              <button class="dropbtn">Test Templet</button>
+                                              <div class="dropdown-content">
+                                                <a [routerLink]="['/TestTemplet/addTestTemplet']">Creat Test Templet</a>
+                                                <a [routerLink]="['/TestTemplet/viewTestTemplet']">View Test Templet</a>
+                                              </div>
+                                            </div>
+                              </li>
+                              <li class="nav-item">
+                                  <div class="dropdown">
+                                          <button class="dropbtn">Publish Test</button>
+                                          <div class="dropdown-content">
+                                            <a  [routerLink]="['/PublishTest/addPublishTest']">Test</a>
+                                            <a [routerLink]="['/PublishTest/viewPublishTest']">View publish Test</a>
+                                          </div>
+                                        </div>
+                          </li>
+                             
+               
+            </ul>
+            <ul class="navbar-nav float-right">
+                <li class="nav-item">
+                    <ng-template #popTemplate let-message="message">
+                    
+                          <p> <button type="button" class="btn " (click)="openModalWithComponent()"> <i class="material-icons">
+                              add_box
+                              </i>sign up</button></p>
+                              
+                              <a class="nav-link" class="btn "  *ngIf="http.loggedIn()" (click)="http.logoutUser()"><i class="material-icons">logout</i>Logout</a>
+                      </ng-template>
+                      <button type="button" class="btn " style='color: white' [popover]="popTemplate" [popoverContext]="context"
+                        [adaptivePosition]="false" triggers="click"  [outsideClick]='true' placement="button">
+                        <i class="material-icons">
+                            person
+                            </i>  Hello, Sagar
+                      </button>
+  
+  
+                </li>
+                
+            </ul>
+        </div> -->
+    </nav>
+  </header>

@@ -5,6 +5,7 @@ import { HttpService } from 'src/app/_shared/services/http/http.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-questions',
@@ -210,7 +211,6 @@ CorrectAnsRadio ;
   }
 
   displayTopic(event) {
-    // console.log(event);    
     console.log("event value", event.target.value);
     var params = {
       subjectId: event.target.value
@@ -220,6 +220,9 @@ CorrectAnsRadio ;
       this.topic = res.data;
       console.log(this.topic);
     });
+
+    // console.log(event);    
+    
   }
 
   multipleSelection(event) {
@@ -252,9 +255,7 @@ CorrectAnsRadio ;
         if (this.CorrectAnsArray[i] == id) {
           console.log(this.CorrectAnsArray[i], id);
           this.CorrectAnsArray.splice(i, 1);
-
         }
-
       }
     }
     console.log(this.CorrectAnsArray);

@@ -23,6 +23,8 @@ import { AuthGuardService } from './auth/auth-guard.service';
 import { QuestionsModule } from './questions/questions.module';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TestTempletModule } from './test-templet/test-templet.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +50,8 @@ import { TestTempletModule } from './test-templet/test-templet.module';
     ToastrModule.forRoot(),
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
-    PopoverModule.forRoot()
+    PopoverModule.forRoot(),
+    BsDatepickerModule.forRoot()
   ],
   providers: [AuthGuardService],
   bootstrap: [AppComponent]

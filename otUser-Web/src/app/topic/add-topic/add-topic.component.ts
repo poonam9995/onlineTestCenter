@@ -39,6 +39,9 @@ export class AddTopicComponent implements OnInit {
     console.log(this.topicData);
   }
   onSubmit() {
+  if(this.addTopic.valid){
+
+  
     console.log(this.addTopic.value);
     console.log(this.topicData);
     var count=0;
@@ -76,7 +79,10 @@ export class AddTopicComponent implements OnInit {
       this.toastr.warning(' Topic Already Exist.');
  this.massage = true;
     }
-   
+  }
+  else{
+    this.toastr.warning('Some fields are Remains');
+  }
   }
 
   displayTopic(event) {

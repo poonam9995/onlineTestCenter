@@ -1,0 +1,51 @@
+<div class="login-container">
+
+
+    <div class="card">
+
+        <div class="row">
+
+            <hr>
+            <div class="col-md-12">
+                <div class="panel panel-default" *ngIf='testquestions'>
+                    <div class="form-Header">
+                        <h4>Test Name : {{testquestions.testName}}
+                                <!-- <h6 style="float: right">Time Left : {{timeLeft}}</h6> -->
+                            <countdown [config]="{leftTime : timeLeft}" style="float:right" #currentTime
+                                 (finished)="finalResult()">$!m!:$!s!</countdown>
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            <label><strong>{{iForArray1+1}} ). Question :</strong> {{questionText}}</label><br>
+                            <label><strong> Options :</strong></label>
+                            <div class="radio" *ngIf='type'>
+                                <div *ngFor='let option of options;let i = index'>
+                                    <label>
+                                        {{i+1}} ) <input type="radio" name='correctAns' value="{{option.id}}"
+                                            (click)='checkCorrectAns($event  ,"Radio")'> {{option.name}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="checkbox" *ngIf='!type'>
+                                <div *ngFor='let option of options;let i = index'>
+                                    <label>
+                                        {{i+1}} ) <input type="checkbox" name='correctAns' value="{{option.id}}"
+                                            (click)='checkCorrectAns($event ,"Checkbox")'> {{option.name}}
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="panel-footer">
+                        <button type="submit" class="btn btn-success" (click)='nextQuestion(iForArray1+1)'>Next</button>
+                        <button type="button" class="btn btn-danger right" *ngIf='!(iForArray1 < arra1.length-1)'
+                            (click)='finalResult()'>Finish</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -132,7 +132,6 @@ exports.deleteTestTemplet = (req, res) => {
                 message: 'Error',
                 data: Error
             });
-
         }
         if (response) {
             res.json({
@@ -166,7 +165,7 @@ exports.updateTestTemplet = function (req, res) {
         testName: req.body.testName,
         description: req.body.description,
         questions: question2,
-        totalMarkes: req.body.totalScore,
+        totalScore: req.body.totalScore,
         passingScore: req.body.passScore,
         duration: req.body.duration,
         status: req.body.status
@@ -210,4 +209,47 @@ exports.CheckUniqueTest = (req, res) => {
             });
         }
     });
+}
+exports.updateTestTempStatus =(req , res)=>{
+    console.log(req.query.id);
+    console.log(req.body);
+    testTemplet.findByIdAndUpdate({ _id: req.query.id }, {$set :{status : req.body.status}}, { new: true },(error,response) => {
+    console.log(response)
+if(error)
+{
+    res.json({
+        message:'error',
+        data:error
+    })
+}
+    if(response)
+    {
+        res.json({
+            message:'Success'
+
+        })
+    }else{
+        res.json({
+            message:'Record Not Found'
+        });
+    }
+    });
+
+}
+exports.findPublishedTestTemplet= (req , res)=>{
+    testTemplet.find({status : 'Published'}).select('_id testName').exec().then((res1)=>{
+        console.log(res1);
+        if(res1){
+            res.json({
+                message:'success',
+                data:res1
+            });
+        }
+        else{
+            res.json({
+                message:'record not Found',
+              
+            });
+        }
+    })
 }

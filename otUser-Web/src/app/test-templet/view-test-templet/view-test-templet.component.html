@@ -10,46 +10,52 @@
           <thead>
             <tr>
               <th>Test.No.</th>
-              <th >Test Name</th>             
-              <th >Total No. Question Count</th>
+              <th>Test Name</th>
+              <th>Total No. Question Count</th>
               <th>Total Marks</th>
-              <th >Passing Marks</th>
-              <th >Status</th>             
+              <th>Passing Marks</th>
+              <th>Status</th>
               <th>Operation</th>
             </tr>
           </thead>
-          <tbody >
-            <tr *ngFor = 'let test of testInfo;let i = index'>
+          <tbody>
+            <tr *ngFor='let test of testInfo;let i = index'>
               <td>{{i+1}}</td>
               <td>{{test.testName}}</td>
               <td>{{test.numberOfQuestions}}</td>
               <td>{{test.totalScore}}</td>
               <td>{{test.passingScore}}</td>
-              <td>{{test.status}}</td>             
+              <td>{{test.status}}</td>
               <td>
 
 
-                  <ng-template #popTemplate let-message="message">
-                      <a class="btn action-btn" routerLink="/TestTemplet/editTestTemplet/{{test._id}}"> 
-                        <i class="material-icons" >edit</i> </a>
-  
-                 <a class="btn action-btn">
-                    <i class="material-icons" (click)='deleteTest(test._id)'>delete</i>
-                    </a>
-                    </ng-template>
-                    <button type="button" class="btn btn-primary" [popover]="popTemplate" [popoverContext]="context"
-                      [adaptivePosition]="false" triggers="click"  [outsideClick]='true' placement="right">
-                      ...
-                    </button>
+                <ng-template #popTemplate let-message="message">
                   
+                  <a *ngIf="test.status === 'Draft'"class="btn action-btn" routerLink="/TestTemplet/editTestTemplet/{{test._id}}">
+                    <i class="material-icons">edit</i> </a>
+                  <a *ngIf="test.status === 'Draft'" class="btn action-btn">
+                    <i class="material-icons" (click)='deleteTest(test._id)'>delete</i>
+                  </a>
+                  <a class="btn action-btn" *ngIf="test.status === 'Published'" (click)="UpdateStatus('Draft',test._id)" >
+                      <i class="material-icons" >cancel</i>
+                    </a>  
+                    <a class="btn action-btn" *ngIf="test.status === 'Draft'" (click)="UpdateStatus('Published',test._id)" >
+                        <i class="material-icons" >check_circle</i>
+                      </a>                    
+                </ng-template>
+                <button type="button" class="btn btn-primary" [popover]="popTemplate" [popoverContext]="context"
+                  [adaptivePosition]="false" triggers="click" [outsideClick]='true' placement="right">
+                  ...
+                </button>
+
               </td>
             </tr>
           </tbody>
         </table>
-      
+
       </div>
-      </div>
-      <br>
     </div>
+    <br>
+  </div>
 
 </div>

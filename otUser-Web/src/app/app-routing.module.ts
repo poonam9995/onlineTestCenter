@@ -33,6 +33,9 @@ const routes: Routes = [
         ,{
             path :"TestTemplet",
             loadChildren:'./test-templet/test-templet.module#TestTempletModule'
+        },{
+            path :"PublishTest",
+            loadChildren:'./publish-test/publish-test.module#PublishTestModule'
         }
     ],
     canActivate:[AuthGuardService]

@@ -1,7 +1,7 @@
 const Topic = require('../models/topics');
 const Questions = require('../models/questions');
 const testTemplet = require('../models/testTemplets');
-
+var async = require("async");
 exports.addTopic = (req, res) => {
     console.log(req.body);
     var topic = new Topic({
@@ -33,70 +33,56 @@ exports.addTopic = (req, res) => {
     });
 }
 exports.removeTopic = (req, res) => {
-    console.log(req.params.id);
-
-    // Questions.find({ topicId: req.params.id }).select('_id').then((response, error) => {
-    //     if (error) {
-    //         res.json({
-    //             massage: 'Error',
-    //             data: error
-    //         });
-    //     }
-    //     if (response) {
-    //         console.log(response)
-
-    //         for (let i = 0; i < response.length; i++) {
-    //             Questions.findByIdAndDelete({ _id: response[i]._id }, (response1,error) => {
-    //                 if (error) {
-    //                     res.json({
-    //                         message: 'Error',
-    //                         data: error
-    //                     });
-    //                 }
-    //                 if (response1) {
-    //                     console.log(response1)
-
-    //                     // testTemplet.updateMany({}, { $pull: { questions: { question: response[i]._id } } }).then((response2, error) => {
-    //                     //     if (error) {
-    //                     //         res.json({
-    //                     //             message: 'Error',
-    //                     //             data: error
-    //                     //         });
-    //                     //     } if (response2) {
-    //                     //         console.log(response2)
-    //                     //         res.json({
-    //                     //                         massage: 'Success',
-    //                     //                         data: response2
-    //                     //                     });
-    //                     //     }
-
-    //                     //     else {
-    //                     //         res.json({
-    //                     //             message: 'Failed'
-    //                     //         });
-        
-    //                     //     }
-
-    //                     // });
-    //                 }
-    //                 else {
-    //                     res.json({
-    //                         message: 'Failed'
-    //                     });
-
-    //                 }
-    //             });
-    //         }
-    //     }
-    //     else {
-    //         console.log(response);
-    //         res.json({
-    //             message: 'Records not found',
-    //         });
-    //     }
-
-    // });
-
+    var testTMPId = [];
+    Questions.find({ 'topicId': req.params.id }).select('_id').exec().then(async (resp) =>{
+        for (let i = 0; i < resp.length; i++) {
+            var result = await testTemplet.find({ "questions.question": resp[i]._id }).select('_id').exec().then(async (testId) => {
+                for (let j = 0; j < testId.length; j++) {
+                    var check = testTMPId.includes(testId[j]._id.toString());
+                    if (!check) {
+                        testTMPId.push(testId[j].id)
+                    }
+                }
+            });
+            var resultForDelted = await testTemplet.updateMany({}, { $pull: { questions: { question: resp[i]._id } } }, { upsert: true }).then(async (response, error) => {
+                if (error) { res.json({ message: 'Error', data: error }); }
+                if (response) { console.log(response); }
+            });
+       
+            var resultdeleteQue = await Questions.findByIdAndDelete({ _id: resp[i]._id }).then((responseofDeleteque) => {
+                if (responseofDeleteque) {
+                    console.log(responseofDeleteque);
+                    // res.json({message: 'Success',
+                    // data: responseofDeleteque});
+                }
+                else { res.json({ message: 'Failed' }); }
+            });
+        }
+        for (let i = 0; i < testTMPId.length; i++) {
+            var result = await testTemplet.find({ _id: testTMPId[i] }).exec().then(async (responsefortesttmp) => {
+                var rightm = 0
+                console.log(responsefortesttmp);
+                if (responsefortesttmp[0].questions.length !== 0) {
+                    console.log('if block')
+                    for (let i = 0; i < responsefortesttmp[0].questions.length; i++) {
+                        rightm = rightm + responsefortesttmp[0].questions[i].rightMarks;
+                    }
+                    var resultOfUpdate = await testTemplet.updateOne({ _id: responsefortesttmp[0]._id }, { $set: { 'totalScore': rightm } }).then(async (resp2, error) => {
+                        if (error) { console.log(error); }
+                        if (resp2) { console.log('uadate total Score',resp2); }
+                        else { console.log("record not found"); }
+                    });
+                } else {
+              console.log('else block')
+                   var resultOfDelete = await testTemplet.findByIdAndDelete({ _id: testTMPId[i]}).then((responseOfDeleteTest, error) => {
+                        if (error) { console.log(error); }
+                        if (responseOfDeleteTest){ console.log(responseOfDeleteTest); }
+                        else { console.log("record not found"); }
+                    });
+                }
+            });           
+        }
+    });
     Topic.findByIdAndDelete({ _id: req.params.id }).exec().then((response) => {
         if (response) {
             res.json({
@@ -104,12 +90,9 @@ exports.removeTopic = (req, res) => {
                 data: response
             });
         }
-        else {
-            res.json({
-                massage:'Record Not Found',
-            });
-        }
+        else { res.json({ massage: 'Record Not Found'}); }
     });
+
 
 }
 exports.findTopic = (req, res) => {
@@ -178,3 +161,5 @@ exports.updataTopic = (req, res) => {
         }
     });
 }
+
+

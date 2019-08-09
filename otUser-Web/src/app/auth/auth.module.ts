@@ -6,7 +6,6 @@ import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { ToastrModule } from 'ngx-toastr';
 import { AuthGuardService } from './auth-guard.service';
 
