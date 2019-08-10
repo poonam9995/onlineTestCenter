@@ -15,6 +15,7 @@ export class StartExamComponent implements OnInit {
   clickedValue: any;
   blurcount: any=0;
   clickOutside: any;
+  PublishId: any;
   constructor(private route: ActivatedRoute, private router: Router,
     private http: HttpService,
     private toastr: ToastrService,
@@ -55,6 +56,7 @@ export class StartExamComponent implements OnInit {
       this.i = requiedInfoForSetLocalStorage.i;
       this.iForArray1 = requiedInfoForSetLocalStorage.iForArray1;
       this.timeLeft = requiedInfoForSetLocalStorage.timeLeft;
+      this.PublishId=requiedInfoForSetLocalStorage._id;
       console.log(requiedInfoForSetLocalStorage.CandidateAnswer);
       this.i = this.arra1[this.iForArray1];
       this.correctAnsQuestionArray = requiedInfoForSetLocalStorage.correctAnswer;
@@ -74,10 +76,13 @@ export class StartExamComponent implements OnInit {
     }
     this.http.get('publishTest/getTestById').subscribe((res: any) => {
       this.testData = res.data;
+      
       this.testData = _.find(res.data, ['testId._id', this.id]);
+      console.log(this.testData);
+      this.PublishId=this.testData._id;
+      console.log(this.PublishId);
       this.timeLeft = parseInt(this.testData.testId.duration) * 60;
-    
-    });
+        });
     this.http.get('exam/getTestDetails', params).subscribe((res: any) => {
       this.testquestions = res[0];
       this.questionArray = this.testquestions.questions;
@@ -92,8 +97,7 @@ export class StartExamComponent implements OnInit {
 
     });
   }
-  setValue(i) {
-    
+  setValue(i) {    
     if (i < this.questionArray.length) {
       this.questionText = this.questionArray[i].question.questionText;
       console.log(this.questionText);
@@ -180,7 +184,8 @@ export class StartExamComponent implements OnInit {
   }
   finalResult() {
     this.timeLeft = 0;
-   
+    console.log(this.testData);
+   console.log(this.correctAnsQuestionArray);
     let status="Fail";
  if(this.testquestions.passingScore <this.correctMartks ){
 status="Pass"
@@ -191,17 +196,19 @@ let result={
   "totalScore": this.testquestions.totalScore,
   "passingScore":this.testquestions.passingScore,
   "testname":this.testquestions.testName,
-  "status":status
+  "status":status,
+  "id":this.PublishId
 }
  console.log(status);
+this.http.post('publishTest/updateResult',result).subscribe((res: any)=>{
 
+});
 localStorage.setItem("result",JSON.stringify(result));
- //this.http.setAnsToService(this.correctAnsQuestionArray, this.testquestions.testName, this.testquestions.totalScore, this.testquestions.passingScore);
  this.router.navigate(['/exam/finalResult']);
   }
   shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
-    var newQuestionArr = [];
+   
     while (0 !== currentIndex){
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
@@ -209,7 +216,6 @@ localStorage.setItem("result",JSON.stringify(result));
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
     }
-
     return array;
   }
   onNotify(value) {
@@ -234,10 +240,8 @@ localStorage.setItem("result",JSON.stringify(result));
     });
     console.log(this.correctAnsQuestionArray);
   }
-  setLocalStorageItem() {
- 
-    let time: any = this.inputView;
-    
+  setLocalStorageItem() { 
+    let time: any = this.inputView;    
     let requiedInfoForSetLocalStorage = {
       'Sufflearray': this.arra1,
       'iForArray1': this.iForArray1,
@@ -245,6 +249,7 @@ localStorage.setItem("result",JSON.stringify(result));
       'timeLeft': time.left / 1000,
       'QuestionArray': this.testquestions,
       'correctAnswer':this.correctAnsQuestionArray,
+      "_id": this.PublishId
     }
     localStorage.setItem('requiedInfoForSetLocalStorage', JSON.stringify(requiedInfoForSetLocalStorage));
   }
@@ -253,17 +258,18 @@ localStorage.setItem("result",JSON.stringify(result));
     this.setLocalStorageItem();
   }
 
-  // @HostListener('window:focus', ['$event'])
-  //   onFocus(event: any): void {
-  //     console.log(event)
-  //     this.toastr.success("You Lost Your " +(this.blurcount+1)+ " Chance")
-  //         this.blurcount++;
-  //         this.setLocalStorageItem();
-  //         if(this.blurcount>3){
-  //           this.toastr.success("You Lost Your Test")
-  //       this.finalResult();
-  //         }
-  //   }
+  @HostListener('window:focus', ['$event'])
+    onFocus(event: any): void {
+      console.log(event)
+      this.toastr.success("You Lost Your " +(this.blurcount+1)+ " Chance")
+          this.blurcount++;
+          this.setLocalStorageItem();
+          if(this.blurcount>3){
+            this.toastr.success("You Lost Your Test")
+        this.finalResult();
+        localStorage.removeItem("requiedInfoForSetLocalStorage");
+          }
+    }
 
     // @HostListener('window:blur', ['$event'])
     // onBlur(event: any): void {
@@ -291,18 +297,19 @@ localStorage.setItem("result",JSON.stringify(result));
   onPopState(event) {
 
     var r = confirm("You pressed a Back button! Are you sure?!");
-
+console.log(r , window.location.pathname, event);
     if (r == true) {
       // Call Back button programmatically as per user confirmation.
       history.back();
       // Uncomment below line to redirect to the previous page instead.
       // window.location = document.referrer // Note: IE11 is not supporting this.
   } else {
+    console.log(r);
       // Stay on the current page.
       history.pushState(null, null, window.location.pathname);
   }
 
-  history.pushState(null, null, window.location.pathname);
+ history.pushState(null, null, window.location.pathname);
   }
   // @HostListener('document:click', ['$event', '$event.target'])
   // onClick(event: MouseEvent, targetElement: HTMLElement): void {

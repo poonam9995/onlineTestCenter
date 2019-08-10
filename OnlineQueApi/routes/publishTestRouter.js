@@ -31,5 +31,6 @@ var upload = multer({
 
 router.post('/savePublishTest',upload.single('file'),publishedController.savePublishTest);
 router.get('/findPublishTest',publishedController.findPublishTest);
-router.get('/getTestById',publishedController.getTestById)
+router.get('/getTestById',publishedController.getTestById);
+router.post('/updateResult',publishedController.updateResult);
 module.exports= router;

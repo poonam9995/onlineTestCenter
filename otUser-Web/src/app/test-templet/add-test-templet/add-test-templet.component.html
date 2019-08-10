@@ -73,6 +73,10 @@
           *ngIf="AddTest.get('passScore').hasError('required') && (AddTest.get('passScore').touched || AddTest.get('passScore').dirty) ">
           Enter marks requered for pass the test 
         </div>
+            <div class="alert red-text"
+        *ngIf="AddTest.get('passScore').errors?.passScore ">
+        Enter Test Name
+      </div> 
             </div>
           </div>
 

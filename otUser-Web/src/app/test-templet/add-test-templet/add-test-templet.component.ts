@@ -2,7 +2,6 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HttpService } from 'src/app/_shared/services/http/http.service';
-import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
 import { ToastrService } from 'ngx-toastr';
 import { commonValidation } from 'src/app/auth/common/validation/common.validation';
 
@@ -71,9 +70,7 @@ export class AddTestTempletComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'gray modal-lg' });
   }
   onSubmit() {
-    if(this.AddTest.valid){
-
-   
+    if(this.AddTest.valid){   
     console.log(this.AddTest.value);
     console.log(status);
     console.log(this.addedQuestions);
@@ -85,32 +82,40 @@ export class AddTestTempletComponent implements OnInit {
       this.toastr.warning(this.testerror);
     }
     else {
-      this.http.post('testTemplet/addTestTemplet', this.AddTest.value).subscribe((res: any) => {
-        console.log(res);
-        if(res.massage == 'Test Already Persent in Database.Plz Update it')
-        {
-          this.toastr.warning(res.message);
-        }
-        if (res.message === 'Error') {
+      if(this.AddTest.value.totalScore < this.AddTest.value.passScore){
+        this.toastr.error('Passing Score Must Not Be Greater than Total Score ');   
+       }else{
+        this.http.post('testTemplet/addTestTemplet', this.AddTest.value).subscribe((res: any) => {
           console.log(res);
-          this.toastr.error('Error Occure', 'Re-enter details');
-        }
-        if (res.message === 'Failed') {
-          console.log(res);
-          this.toastr.warning(res.message);
-        }
-        if (res.message === 'Success') {
-          this.toastr.success(res.message, 'Record insert Successfully');
-          this.Questioncount = 0;
-          this.addedQuestions = [];
-          this.id=[];
-          this.totalMarks = 0;
-          this.ngOnInit();
-        
-        }
-      });
+          if(res.massage == 'Test Already Persent in Database.Plz Update it')
+          {
+            this.toastr.warning(res.message);
+          }
+          if (res.message === 'Error') {
+            console.log(res);
+            this.toastr.error('Error Occure', 'Re-enter details');
+          }
+          if (res.message === 'Failed') {
+            console.log(res);
+            this.toastr.warning(res.message);
+          }
+          if (res.message === 'Success') {
+            this.toastr.success(res.message, 'Record insert Successfully');
+            this.Questioncount = 0;
+            this.addedQuestions = [];
+            this.id=[];
+            this.totalMarks = 0;
+            this.ngOnInit();
+          
+          }
+        });
+       }
+     
     }
   }else{
+    console.log(this.AddTest.value.totalScore);
+    if(this.AddTest.value.totalScore<this.AddTest.value.passScore){
+      this.toastr.error('Passing Score Must Not Be Greater than Total Score ');    }
     this.toastr.warning('some fields are Remains');
   }
   }

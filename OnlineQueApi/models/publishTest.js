@@ -11,10 +11,10 @@ const publishTest = new Schema({
             result: {
                 marks: Number,
                 status: String,
-                correctAns: [{
+                candidateAnswer: [{
                     id: String,
                     status: String,
-                    answer: [],
+                    candidateAns: [],
                 }],
             }
         }

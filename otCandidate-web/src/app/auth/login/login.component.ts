@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
       {
         console.log(res.token);
         localStorage.setItem('token',res.token);
+        console.log(res.token);
         this.router.navigate(['/dashboard/default']);
       }else{
         this.router.navigate(['/login']);

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DefaultComponent } from './default/default.component';
+import { AuthGuardService } from '../auth/auth-guard.service';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'dashboard/default',
     pathMatch: 'full',
   },
   {
@@ -17,7 +18,7 @@ const routes: Routes = [
           component: DefaultComponent,
        
         }],
-    // canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService]
 
   }
 

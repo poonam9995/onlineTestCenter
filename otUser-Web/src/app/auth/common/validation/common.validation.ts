@@ -8,7 +8,6 @@ export class commonValidation {
   if (parent) {
     let password = parent.get('password').value;
     let confirmPassword = control.value;
-
     if (password != confirmPassword) {
       return { pass: true };
     } else {
@@ -33,11 +32,9 @@ console.log(typeof(control.value.length),"",control.value.length);
      optionerror: true
    };
  }
- else{
-   
+ else{   
    console.log('heyeee')
-   
-    return null;
+       return null;
  }
  
 }
@@ -50,12 +47,11 @@ static checkQuestions(control: AbstractControl): { [key: string]: boolean } | nu
      questionerror: true
    };
  }
- else{
-   
+ else{   
    console.log('heyeee')
-   
-    return null;
+       return null;
  }
  
 }
+
 }

@@ -14,7 +14,11 @@ New Concept=>{
     3)aggrigate function() Count
     4)populate()
     5)select()
-   6) lodash=>{
+    7)$set =If the field does not exist, $set will add a new field with the specified value, provided that the new field does not violate a type constraint. If you specify a dotted path for a non-existent field, $set will create the embedded documents as needed to fulfill the dotted path to the field.
+    8)findAndModify() =Exactly one findAndModify() successfully inserts a new document.
+Zero or more findAndModify() methods update the newly inserted document.
+Zero or more findAndModify() methods fail when they attempt to insert documents with the same name. If the method fails due to the unique index constraint violation on the name field, you can retry the method. Absent a delete of the document, the retry should not fail.
+      6) lodash=>{
       1) _pull();=>var array = ['a', 'b', 'c', 'a', 'b', 'c'];
  
                     _.pull(array, 'a', 'c');
