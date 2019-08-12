@@ -11,46 +11,49 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers:[HttpService]
+  providers: [HttpService]
 })
 export class LoginComponent implements OnInit {
   login: FormGroup;
   bsModalRef: BsModalRef;
-  constructor(private httpService: HttpService,private modalService: BsModalService,private router :Router,private toastr :ToastrService) { }
-
+  constructor(private httpService: HttpService, private modalService: BsModalService, private router: Router, private toastr: ToastrService) { }
+  public message;
   ngOnInit() {
-    this.login= new FormGroup({
-      email: new FormControl('',[Validators.required ,Validators.pattern(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,20}$/)]),
-      password:new FormControl('',Validators.required)
+    this.login = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.pattern(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,20}$/)]),
+      password: new FormControl('', Validators.required)
+    });
+    this.httpService.simpleGet('admin/adminLoginInfo').subscribe((res: any) => {
+      console.log(res.message);
+      this.message=res.message;
     });
   }
 
-  onSubmit(){
+  onSubmit() {
     console.log(this.login.value);
-    this.httpService.simplePost('admin/adminLogin',this.login.value).subscribe((res:any)=>{
+    this.httpService.simplePost('admin/adminLogin', this.login.value).subscribe((res: any) => {
       console.log(res);
-      if(res.message == 'Auth failed'){
+      if (res.message == 'Auth failed') {
         this.toastr.warning('Email_id Not Match');
         this.router.navigate(['/login']);
       }
-      if(res.message ==='Success')
-      {
+      if (res.message === 'Success') {
         console.log(res.token);
-        localStorage.setItem('token',res.token);
-       this.router.navigate(['/dashboard']);
-      }else{
+        localStorage.setItem('token', res.token);
+        this.router.navigate(['/dashboard']);
+      } else {
         this.router.navigate(['/login']);
       }
-      
+
     });
   }
+
   openModalWithComponent() {
-    this.bsModalRef = this.modalService.show(RegisterComponent,{class:'model-lg'});
+    this.bsModalRef = this.modalService.show(RegisterComponent, { class: 'model-lg' });
     this.bsModalRef.content.closeBtnName = 'Close';
   }
-
-  openModalWithComponentforgot(){
-    this.bsModalRef = this.modalService.show(ForgetPasswordComponent,{class:'model-sm'});
+  openModalWithComponentforgot() {
+    this.bsModalRef = this.modalService.show(ForgetPasswordComponent, { class: 'model-sm' });
     this.bsModalRef.content.closeBtnName = 'Close';
   }
 

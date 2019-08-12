@@ -9,4 +9,5 @@ router.patch('/updateAdmin/:id',adminUser.updateAdmin);
 router.delete('/deleteAdmin/:id',adminUser.deleteAdmin);
 router.post('/forgetPassword',adminUser.forgetPassword);
 router.post('/resetPassword/:id',adminUser.resetPassword);
+router.get('/adminLoginInfo',adminUser.adminLoginInfo);
 module.exports= router;

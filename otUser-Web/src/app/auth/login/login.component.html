@@ -16,7 +16,9 @@
           </form>
           
           <a  (click)="openModalWithComponentforgot()" class="text-primary " style="text-decoration: underline;" >Forgot password</a>
-      
+          <p> <button type="button" class="btn" *ngIf="message== 'Succes'" (click)="openModalWithComponent()"> <i class="material-icons">
+           
+            </i>sign up</button></p>
         </div>
       </div>
     </div>

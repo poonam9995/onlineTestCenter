@@ -241,3 +241,26 @@ exports.deleteAdmin = (req, res) => {
         }
     });
 }
+exports.adminLoginInfo =(req, res)=>{
+    Admin.find().then((respons,error) =>{
+     if(error){
+         res.json({
+             message:"Error",
+             data:error
+         });
+     }
+     if(respons.length>0){
+        res.json({
+            message:"Record Present",
+            data:respons
+        });
+     }else{
+        res.json({
+            message:"Succes",
+            data:respons
+        });
+     }
+    });
+
+   
+}
